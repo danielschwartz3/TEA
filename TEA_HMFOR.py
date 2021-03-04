@@ -1,7 +1,4 @@
-import matplotlib
-# matplotlib.use('TkAgg')
-# import matplotlib.pyplot as plt
-
+import matplotlib.pyplot as plt
 import numpy as np
 
 # _______________________ Inputs _________________________
@@ -139,20 +136,31 @@ def HMFOR_TEA(product_production: float, product_price: float, operating_time: f
             CF += dep[i-1] * total_capital * income_tax
         NPV += CF * discount_facor
 
+    # ____________________Figures________________________
+
+    # ________Pie Charts__________
+
+    # Operating Costs
+    op_costs = np.array([electricity_operating, maintenance_operating,
+                         crystal_operating, water_operating, hmf_operating])
+    op_costs_labels = ["Electricity", "Maintenance",
+                       "Crystallization", "Water", "HMF input"]
+    op_costs_explode = [0, 0, 0, 0, 0.2]
+    plt.pie(op_costs, labels=op_costs_labels, explode=op_costs_explode)
+    plt.show()
+
+    # Operating Costs without HMF
+    op_costs_no_hmf = np.array([electricity_operating, maintenance_operating,
+                                crystal_operating, water_operating])
+    op_costs_no_hmf_labels = ["Electricity", "Maintenance",
+                              "Crystallization", "Water"]
+    plt.pie(op_costs_no_hmf, labels=op_costs_no_hmf_labels)
+    plt.show()
+
     return([NPV, payback_time])
 
 
-# print(HMFOR_TEA(product_production, product_price, operating_time,
-#             electricity_price, h2_price, water_price, hmf_price,
-#             electrolyzer_reference_cost, income_tax, interest_rate, plant_lifetime,
-#             current_density, cell_voltage, faradaic_efficiency, fdca_yield, electrolyte_density))
-
-# Pie Charts
-
-# Operating Costs
-# y = np.array([35, 25, 25, 15])
-# mylabels = ["Apples", "Bananas", "Cherries", "Dates"]
-# myexplode = [0.2, 0, 0, 0]
-
-# plt.pie(y, labels=mylabels, explode=myexplode)
-# plt.show()
+print(HMFOR_TEA(product_production, product_price, operating_time,
+                electricity_price, h2_price, water_price, hmf_price,
+                electrolyzer_reference_cost, income_tax, interest_rate, plant_lifetime,
+                current_density, cell_voltage, faradaic_efficiency, fdca_yield, electrolyte_density))

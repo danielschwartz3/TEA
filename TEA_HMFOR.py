@@ -141,7 +141,7 @@ def HMFOR_TEA(product_production: float, product_price: float, operating_time: f
                                                 crystal_operating, water_operating, hmf_operating], [electrolyzer_captital, crystal_captital, plant_capital]])
 
 
-def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, FE_upper):
+def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, FE_upper, yield_lower, yield_upper):
     # Generates plots for HMFOR reaction
 
     [NPV_base, payback_time_base, product_income, op_costs,
@@ -280,26 +280,118 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
 
     # adding the annotations
     for i in range(0, num_vars):
-        ax_upper.annotate(str(round(sa_upper[i]*100, 3)) + '%', xy=(0.00001, num_vars-0.5 - i),
+        ax_upper.annotate(str(round(sa_upper[i]*100, 3)) + '%', xy=(0.00001, 0.5 + i),
                           xycoords='data',
                           xytext=(16, 0), textcoords='offset points',
                           size=10,
                           va='center')
-        ax_lower.annotate(str(round(sa_lower[i]*100, 3)) + '%', xy=(0.06, num_vars-0.5 - i),
+        ax_lower.annotate(str(round(sa_lower[i]*100, 3)) + '%', xy=(0.06, 0.5 + i),
                           xycoords='data',
                           xytext=(16, 0), textcoords='offset points',
                           size=10,
                           va='center')
 
+    plt.title('Sensitivity Analysis')
     plt.show()
 
     # ________Color Scatter Charts__________
 
+    scatter_step = 200
+
     # Current Density (x) vs Voltage (y)
+
+    x = []
+    y = []
+    cd_cv_npv = []
+    cd = cd_lower
+    cv = cv_lower
+    cd_step = (cd_upper-cd_lower)/scatter_step
+    cv_step = (cv_upper-cv_lower)/scatter_step
+
+    for i in range(0, scatter_step):
+        for j in range(0, scatter_step):
+            x.append(cd)
+            y.append(cv)
+            results = HMFOR_TEA(*HMFOR_inputs[:11], cd, cv, *HMFOR_inputs[13:])
+            cd_cv_npv.append(results[0])
+            cv += cv_step
+        cd += cd_step
+        cv = cv_lower
+
+    plt.scatter(x, y, edgecolors='none', s=3, c=cd_cv_npv)
+    plt.colorbar()
+    plt.title('Current Density vs Cell Voltage')
+    plt.xlabel('Current Density [A/cm^2]')
+    plt.ylabel('Cell Voltage [V]')
+    plt.xlim(cd_lower, cd_upper)
+    plt.xticks(np.arange(cd_lower, cd_upper + 10 ** -8, (cd_upper-cd_lower)/4))
+    plt.ylim(cv_lower, cv_upper)
+    plt.yticks(np.arange(cv_lower, cv_upper + 10 ** -8, (cv_upper-cv_lower)/4))
+    plt.show()
 
     # FE (x) vs Voltage (y)
 
+    x = []
+    y = []
+    fe_cv_npv = []
+    FE = FE_lower
+    cv = cv_lower
+    FE_step = (FE_upper-FE_lower)/scatter_step
+    cv_step = (cv_upper-cv_lower)/scatter_step
+
+    for i in range(0, scatter_step):
+        for j in range(0, scatter_step):
+            x.append(FE)
+            y.append(cv)
+            results = HMFOR_TEA(*HMFOR_inputs[:12], cv, FE, *HMFOR_inputs[14:])
+            fe_cv_npv.append(results[0])
+            cv += cv_step
+        FE += FE_step
+        cv = cv_lower
+
+    plt.scatter(x, y, edgecolors='none', s=3, c=fe_cv_npv)
+    plt.colorbar()
+    plt.title('Faradaic Efficienct vs Cell Voltage')
+    plt.xlabel('Faradaic Efficienct')
+    plt.ylabel('Cell Voltage [V]')
+    plt.xlim(FE_lower, FE_upper)
+    plt.xticks(np.arange(FE_lower, FE_upper + 10 ** -8, (FE_upper-FE_lower)/4))
+    plt.ylim(cv_lower, cv_upper)
+    plt.yticks(np.arange(cv_lower, cv_upper + 10 ** -8, (cv_upper-cv_lower)/4))
+    plt.show()
+
     # Yield (x) vs Voltage (y)
+
+    x = []
+    y = []
+    yld_cv_npv = []
+    yld = yield_lower
+    cv = cv_lower
+    yld_step = (yield_upper-yield_lower)/scatter_step
+    cv_step = (cv_upper-cv_lower)/scatter_step
+
+    for i in range(0, scatter_step):
+        for j in range(0, scatter_step):
+            x.append(yld)
+            y.append(cv)
+            results = HMFOR_TEA(
+                *HMFOR_inputs[:12], cv, HMFOR_inputs[13], yld, HMFOR_inputs[-1])
+            yld_cv_npv.append(results[0])
+            cv += cv_step
+        yld += yld_step
+        cv = cv_lower
+
+    plt.scatter(x, y, edgecolors='none', s=3, c=yld_cv_npv)
+    plt.colorbar()
+    plt.title('FDCA Yield vs Cell Voltage')
+    plt.xlabel('FDCA Yield')
+    plt.ylabel('Cell Voltage [V]')
+    plt.xlim(yield_lower, yield_upper)
+    plt.xticks(np.arange(yield_lower, yield_upper +
+                         10 ** -8, (yield_lower-yield_upper)/4))
+    plt.ylim(cv_lower, cv_upper)
+    plt.yticks(np.arange(cv_lower, cv_upper + 10 ** -8, (cv_upper-cv_lower)/4))
+    plt.show()
 
     return([NPV_base, payback_time_base])
 
@@ -311,4 +403,4 @@ HMFOR_inputs = [product_production, product_price, operating_time,
 
 # print(HMFOR_TEA(*HMFOR_inputs))
 
-print(HMFOR_plots(HMFOR_inputs, 0.001, 0.01, 1, 2, 0.8, 1))
+print(HMFOR_plots(HMFOR_inputs, 0.001, 0.01, 1, 2, 0.8, 1, 0.8, 1))

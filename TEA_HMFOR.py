@@ -246,8 +246,8 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     ax_upper = fig.add_axes([0.6, 0.1, 0.35, 0.8])
 
     # TODO display the axes, not showing for some reason
-    ax_upper.set_xticks(np.arange(0, 0.5, 0.05))
-    ax_lower.set_xticks(np.arange(0, 0.5, 0.05))
+    ax_upper.set_xticks(np.arange(0.05, 0.5, 0.05))
+    ax_lower.set_xticks(np.arange(0.05, 0.5, 0.05))
 
     # just tick on the top
     ax_lower.xaxis.set_ticks_position('top')
@@ -275,8 +275,8 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     # the axes titles are in axes coords, so x=0, y=1.025 is on the left
     # side of the axes, just above, x=1.0, y=1.025 is the right side of the
     # axes, just above
-    ax_upper.set_title('+10%', x=0.0, y=1.025, fontsize=12)
-    ax_lower.set_title('-10%', x=1.0, y=1.025, fontsize=12)
+    ax_upper.set_title('+10%', x=0.0, y=1, fontsize=12)
+    ax_lower.set_title('-10%', x=1.0, y=1, fontsize=12)
 
     # adding the annotations
     for i in range(0, num_vars):

@@ -227,13 +227,13 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     for i in range(0, len(sa_lower_vars)):
         results = HMFOR_TEA(*HMFOR_inputs[:3], sa_lower_vars[i][6], *HMFOR_inputs[4:6], sa_lower_vars[i][5], sa_lower_vars[i][0],
                             *HMFOR_inputs[8:11], sa_lower_vars[i][4], sa_lower_vars[i][3], sa_lower_vars[i][1], sa_lower_vars[i][2], HMFOR_inputs[-1])
-        sa_lower.append(abs(results[0] / NPV_base-1))
+        sa_lower.append(results[0] / NPV_base-1)
 
     sa_upper = []
     for i in range(0, len(sa_upper_vars)):
         results = HMFOR_TEA(*HMFOR_inputs[:3], sa_upper_vars[i][6], *HMFOR_inputs[4:6], sa_upper_vars[i][5], sa_upper_vars[i][0],
                             *HMFOR_inputs[8:11], sa_upper_vars[i][4], sa_upper_vars[i][3], sa_upper_vars[i][1], sa_upper_vars[i][2], HMFOR_inputs[-1])
-        sa_upper.append(abs(results[0] / NPV_base-1))
+        sa_upper.append(results[0] / NPV_base-1)
 
     num_vars = len(sa_vars)
 
@@ -245,21 +245,42 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     ax_lower = fig.add_axes([0.05, 0.1, 0.35, 0.8])
     ax_upper = fig.add_axes([0.6, 0.1, 0.35, 0.8])
 
-    ax_upper.set_xticks(np.arange(0.05, 0.5, 0.05))
-    ax_lower.set_xticks(np.arange(0.05, 0.5, 0.05))
+    # step_lower = max([abs(ele) for ele in sa_lower])/4
+    # step_upper = max([abs(ele) for ele in sa_upper])/4
+
+    # ax_upper.set_xticks(np.arange(0.05, 4*step_upper, step_upper))
+    # ax_lower.set_xticks(np.arange(0.05, 4*step_lower, step_lower))
 
     # just tick on the top
     ax_lower.xaxis.set_ticks_position('top')
     ax_upper.xaxis.set_ticks_position('top')
 
+    # Set figure title
+    fig.suptitle('Sensitivity Analysis')
+
+    # set bar colors
+    c_lower = []
+    c_upper = []
+
+    for i in range(0, num_vars):
+        if sa_lower[i] < 0:
+            c_lower.append('red')
+        else:
+            c_lower.append('green')
+
+        if sa_upper[i] < 0:
+            c_upper.append('red')
+        else:
+            c_upper.append('green')
+
     # make the lower graph
-    ax_lower.barh(pos, sa_lower, align='center', facecolor='#7E895F',
+    ax_lower.barh(pos, [abs(ele) for ele in sa_lower], align='center', color=c_lower,
                   height=0.5, edgecolor='None')
     ax_lower.set_yticks([])
     ax_lower.invert_xaxis()
 
     # make the upper graph
-    ax_upper.barh(pos, sa_upper, align='center', facecolor='#6D7D72',
+    ax_upper.barh(pos, [abs(ele) for ele in sa_upper], align='center', color=c_upper,
                   height=0.5, edgecolor='None')
     ax_upper.set_yticks([])
 
@@ -274,23 +295,21 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     # the axes titles are in axes coords, so x=0, y=1.025 is on the left
     # side of the axes, just above, x=1.0, y=1.025 is the right side of the
     # axes, just above
-    ax_upper.set_title('+10%', x=0.0, y=1, fontsize=12)
-    ax_lower.set_title('-10%', x=1.0, y=1, fontsize=12)
+    ax_upper.set_title('+10%', x=-0.15, y=0.97, fontsize=12)
+    ax_lower.set_title('-10%', x=1.15, y=0.97, fontsize=12)
 
     # adding the annotations
     for i in range(0, num_vars):
-        ax_upper.annotate(str(round(sa_upper[i]*100, 3)) + '%', xy=(0.00001, 0.5 + i),
+        ax_upper.annotate(str(round(abs(sa_upper[i])*100, 2)) + '%', xy=(0.00001, 0.5 + i),
                           xycoords='data',
                           xytext=(16, 0), textcoords='offset points',
                           size=10,
                           va='center')
-        ax_lower.annotate(str(round(sa_lower[i]*100, 3)) + '%', xy=(0.06, 0.5 + i),
+        ax_lower.annotate(str(round(abs(sa_lower[i])*100, 2)) + '%', xy=(max([abs(ele) for ele in sa_lower])/2, 0.5 + i),
                           xycoords='data',
                           xytext=(16, 0), textcoords='offset points',
                           size=10,
                           va='center')
-
-    plt.title('Sensitivity Analysis')
     plt.show()
 
     # ________Color Scatter Charts__________
@@ -318,7 +337,9 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
         cv = cv_lower
 
     plt.scatter(x, y, edgecolors='none', s=3, c=cd_cv_npv)
-    plt.colorbar()
+    plt.colorbar(label='Net Present Value [$]')
+    plt.scatter(HMFOR_inputs[11], HMFOR_inputs[12],
+                edgecolors='black', s=8, c='b')
     plt.title('Current Density vs Cell Voltage')
     plt.xlabel('Current Density [A/cm^2]')
     plt.ylabel('Cell Voltage [V]')
@@ -349,9 +370,11 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
         cv = cv_lower
 
     plt.scatter(x, y, edgecolors='none', s=3, c=fe_cv_npv)
-    plt.colorbar()
+    plt.colorbar(label='Net Present Value [$]')
+    plt.scatter(HMFOR_inputs[13], HMFOR_inputs[12],
+                edgecolors='black', s=8, c='b')
     plt.title('Faradaic Efficienct vs Cell Voltage')
-    plt.xlabel('Faradaic Efficienct')
+    plt.xlabel('Faradaic Efficiency')
     plt.ylabel('Cell Voltage [V]')
     plt.xlim(FE_lower, FE_upper)
     plt.xticks(np.arange(FE_lower, FE_upper + 10 ** -8, (FE_upper-FE_lower)/4))
@@ -381,7 +404,9 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
         cv = cv_lower
 
     plt.scatter(x, y, edgecolors='none', s=3, c=yld_cv_npv)
-    plt.colorbar()
+    plt.colorbar(label='Net Present Value [$]')
+    plt.scatter(HMFOR_inputs[14], HMFOR_inputs[12],
+                edgecolors='black', s=8, c='b')
     plt.title('FDCA Yield vs Cell Voltage')
     plt.xlabel('FDCA Yield')
     plt.ylabel('Cell Voltage [V]')
@@ -421,4 +446,4 @@ HMFOR_inputs = [product_production, product_price, operating_time,
 
 # print(HMFOR_TEA(*HMFOR_inputs))
 
-print(HMFOR_plots(HMFOR_inputs, 0.001, 0.01, 1, 2, 0.8, 1, 0.8, 1))
+print(HMFOR_plots(HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1))

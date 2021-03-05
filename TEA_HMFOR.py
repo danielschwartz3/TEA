@@ -1,3 +1,4 @@
+import matplotlib.transforms as transforms
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -136,31 +137,178 @@ def HMFOR_TEA(product_production: float, product_price: float, operating_time: f
             CF += dep[i-1] * total_capital * income_tax
         NPV += CF * discount_facor
 
-    # ____________________Figures________________________
+    return([NPV, payback_time, product_income, [electricity_operating, maintenance_operating,
+                                                crystal_operating, water_operating, hmf_operating], [electrolyzer_captital, crystal_captital, plant_capital]])
+
+
+def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, FE_upper):
+    # Generates plots for HMFOR reaction
+
+    [NPV_base, payback_time_base, product_income, op_costs,
+        cap_costs] = HMFOR_TEA(*HMFOR_inputs)
 
     # ________Pie Charts__________
 
     # Operating Costs
-    op_costs = np.array([electricity_operating, maintenance_operating,
-                         crystal_operating, water_operating, hmf_operating])
     op_costs_labels = ["Electricity", "Maintenance",
                        "Crystallization", "Water", "HMF input"]
     op_costs_explode = [0, 0, 0, 0, 0.2]
-    plt.pie(op_costs, labels=op_costs_labels, explode=op_costs_explode)
+    plt.pie(op_costs, labels=op_costs_labels,
+            explode=op_costs_explode, autopct='%1.1f%%')
+    plt.title('Operating Cost Breakdown')
     plt.show()
 
     # Operating Costs without HMF
-    op_costs_no_hmf = np.array([electricity_operating, maintenance_operating,
-                                crystal_operating, water_operating])
     op_costs_no_hmf_labels = ["Electricity", "Maintenance",
                               "Crystallization", "Water"]
-    plt.pie(op_costs_no_hmf, labels=op_costs_no_hmf_labels)
+    plt.pie(op_costs[:-1], labels=op_costs_no_hmf_labels, autopct='%1.1f%%')
+    plt.title('Operating Cost Breakdown Excluding HMF Cost')
     plt.show()
 
-    return([NPV, payback_time])
+    # Capital Costs
+    cap_costs_labels = ["Electrolyzer", "Crystallizer",
+                        "Balance of Plant"]
+    plt.pie(cap_costs, labels=cap_costs_labels, autopct='%1.1f%%')
+    plt.title('Capital Cost Breakdown')
+    plt.show()
+
+    # ________Sensitivity Analysis Charts__________
+
+    # Set up scenarios (+/- 10%)
+
+    sa_vars = ['Electrolyzer Cost', 'Faradaic Efficiency', 'FDCA Yield',
+               'Cell Voltage', 'Current Density', 'HMF Price', 'Electricity Price']
+
+    sa_lower_vars = [[0.9*HMFOR_inputs[7], HMFOR_inputs[13], HMFOR_inputs[14], HMFOR_inputs[12],
+                      HMFOR_inputs[11], HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], 0.9*HMFOR_inputs[13], HMFOR_inputs[14], HMFOR_inputs[12],
+                      HMFOR_inputs[11], HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], HMFOR_inputs[13], 0.9*HMFOR_inputs[14], HMFOR_inputs[12],
+                      HMFOR_inputs[11], HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], HMFOR_inputs[13], HMFOR_inputs[14], 0.9*HMFOR_inputs[12],
+                      HMFOR_inputs[11], HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], HMFOR_inputs[13], HMFOR_inputs[14], HMFOR_inputs[12],
+                      0.9*HMFOR_inputs[11], HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], HMFOR_inputs[13], HMFOR_inputs[14], HMFOR_inputs[12],
+                      HMFOR_inputs[11], 0.9*HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], HMFOR_inputs[13], HMFOR_inputs[14], HMFOR_inputs[12],
+                      HMFOR_inputs[11], HMFOR_inputs[6], 0.9*HMFOR_inputs[3]],
+                     ]
+
+    sa_upper_vars = [[1.1*HMFOR_inputs[7], HMFOR_inputs[13], HMFOR_inputs[14], HMFOR_inputs[12],
+                      HMFOR_inputs[11], HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], 1.1*HMFOR_inputs[13], HMFOR_inputs[14], HMFOR_inputs[12],
+                      HMFOR_inputs[11], HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], HMFOR_inputs[13], 1.1*HMFOR_inputs[14], HMFOR_inputs[12],
+                      HMFOR_inputs[11], HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], HMFOR_inputs[13], HMFOR_inputs[14], 1.1*HMFOR_inputs[12],
+                      HMFOR_inputs[11], HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], HMFOR_inputs[13], HMFOR_inputs[14], HMFOR_inputs[12],
+                      1.1*HMFOR_inputs[11], HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], HMFOR_inputs[13], HMFOR_inputs[14], HMFOR_inputs[12],
+                      HMFOR_inputs[11], 1.1*HMFOR_inputs[6], HMFOR_inputs[3]],
+
+                     [HMFOR_inputs[7], HMFOR_inputs[13], HMFOR_inputs[14], HMFOR_inputs[12],
+                      HMFOR_inputs[11], HMFOR_inputs[6], 1.1*HMFOR_inputs[3]],
+                     ]
+
+    sa_lower = []
+    for i in range(0, len(sa_lower_vars)):
+        results = HMFOR_TEA(*HMFOR_inputs[:3], sa_lower_vars[i][6], *HMFOR_inputs[4:6], sa_lower_vars[i][5], sa_lower_vars[i][0],
+                            *HMFOR_inputs[8:11], sa_lower_vars[i][4], sa_lower_vars[i][3], sa_lower_vars[i][1], sa_lower_vars[i][2], HMFOR_inputs[-1])
+        sa_lower.append(abs(results[0] / NPV_base-1))
+
+    sa_upper = []
+    for i in range(0, len(sa_upper_vars)):
+        results = HMFOR_TEA(*HMFOR_inputs[:3], sa_upper_vars[i][6], *HMFOR_inputs[4:6], sa_upper_vars[i][5], sa_upper_vars[i][0],
+                            *HMFOR_inputs[8:11], sa_upper_vars[i][4], sa_upper_vars[i][3], sa_upper_vars[i][1], sa_upper_vars[i][2], HMFOR_inputs[-1])
+        sa_upper.append(abs(results[0] / NPV_base-1))
+
+    num_vars = len(sa_vars)
+
+    # bars centered on the y axis
+    pos = np.arange(num_vars) + .5
+
+    # make the left and right axes
+    fig = plt.figure(facecolor='white', edgecolor='none')
+    ax_lower = fig.add_axes([0.05, 0.1, 0.35, 0.8])
+    ax_upper = fig.add_axes([0.6, 0.1, 0.35, 0.8])
+
+    # TODO display the axes, not showing for some reason
+    ax_upper.set_xticks(np.arange(0, 0.5, 0.05))
+    ax_lower.set_xticks(np.arange(0, 0.5, 0.05))
+
+    # just tick on the top
+    ax_lower.xaxis.set_ticks_position('top')
+    ax_upper.xaxis.set_ticks_position('top')
+
+    # make the lower graph
+    ax_lower.barh(pos, sa_lower, align='center', facecolor='#7E895F',
+                  height=0.5, edgecolor='None')
+    ax_lower.set_yticks([])
+    ax_lower.invert_xaxis()
+
+    # make the upper graph
+    ax_upper.barh(pos, sa_upper, align='center', facecolor='#6D7D72',
+                  height=0.5, edgecolor='None')
+    ax_upper.set_yticks([])
+
+    # we want the labels to be centered in the fig coord system and
+    # centered w/ respect to the bars so we use a custom transform
+    transform = transforms.blended_transform_factory(
+        fig.transFigure, ax_upper.transData)
+    for i, label in enumerate(sa_vars):
+        ax_upper.text(0.5, i+0.5, label, ha='center', va='center',
+                      transform=transform)
+
+    # the axes titles are in axes coords, so x=0, y=1.025 is on the left
+    # side of the axes, just above, x=1.0, y=1.025 is the right side of the
+    # axes, just above
+    ax_upper.set_title('+10%', x=0.0, y=1.025, fontsize=12)
+    ax_lower.set_title('-10%', x=1.0, y=1.025, fontsize=12)
+
+    # adding the annotations
+    for i in range(0, num_vars):
+        ax_upper.annotate(str(round(sa_upper[i]*100, 3)) + '%', xy=(0.00001, num_vars-0.5 - i),
+                          xycoords='data',
+                          xytext=(16, 0), textcoords='offset points',
+                          size=10,
+                          va='center')
+        ax_lower.annotate(str(round(sa_lower[i]*100, 3)) + '%', xy=(0.06, num_vars-0.5 - i),
+                          xycoords='data',
+                          xytext=(16, 0), textcoords='offset points',
+                          size=10,
+                          va='center')
+
+    plt.show()
+
+    # ________Color Scatter Charts__________
+
+    # Current Density (x) vs Voltage (y)
+
+    # FE (x) vs Voltage (y)
+
+    # Yield (x) vs Voltage (y)
+
+    return([NPV_base, payback_time_base])
 
 
-print(HMFOR_TEA(product_production, product_price, operating_time,
+HMFOR_inputs = [product_production, product_price, operating_time,
                 electricity_price, h2_price, water_price, hmf_price,
                 electrolyzer_reference_cost, income_tax, interest_rate, plant_lifetime,
-                current_density, cell_voltage, faradaic_efficiency, fdca_yield, electrolyte_density))
+                current_density, cell_voltage, faradaic_efficiency, fdca_yield, electrolyte_density]
+
+# print(HMFOR_TEA(*HMFOR_inputs))
+
+print(HMFOR_plots(HMFOR_inputs, 0.001, 0.01, 1, 2, 0.8, 1))

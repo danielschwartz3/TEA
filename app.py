@@ -1,4 +1,4 @@
-from TEA_HMFOR import HMFOR_TEA
+from TEA_HMFOR import HMFOR_TEA, HMFOR_inputs
 from flask import Flask, jsonify
 import os
 
@@ -15,10 +15,12 @@ def hmfor(prod, prod_price, op_time,
           elec_p, h2_p, h2o_p, hmf_p,
           elec_ref, t, r, plant_life,
           cur_den, cell_v, FE, fdca_y, elec_den):
-    [NPV, payback_time] = HMFOR_TEA(prod, prod_price, op_time,
-                                    elec_p, h2_p, h2o_p, hmf_p,
-                                    elec_ref, t, r, plant_life,
-                                    cur_den, cell_v, FE, fdca_y, elec_den)
+    HMFOR_inputs = [prod, prod_price, op_time,
+                    elec_p, h2_p, h2o_p, hmf_p,
+                    elec_ref, t, r, plant_life,
+                    cur_den, cell_v, FE, fdca_y, elec_den]
+    [NPV, payback_time, product_income, op_costs,
+        cap_costs] = HMFOR_TEA(*HMFOR_inputs)
     return jsonify({"NPV": NPV, "payback_time": payback_time})
 
 

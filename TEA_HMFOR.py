@@ -245,7 +245,6 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     ax_lower = fig.add_axes([0.05, 0.1, 0.35, 0.8])
     ax_upper = fig.add_axes([0.6, 0.1, 0.35, 0.8])
 
-    # TODO display the axes, not showing for some reason
     ax_upper.set_xticks(np.arange(0.05, 0.5, 0.05))
     ax_lower.set_xticks(np.arange(0.05, 0.5, 0.05))
 
@@ -391,6 +390,25 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
                          10 ** -8, (yield_lower-yield_upper)/4))
     plt.ylim(cv_lower, cv_upper)
     plt.yticks(np.arange(cv_lower, cv_upper + 10 ** -8, (cv_upper-cv_lower)/4))
+    plt.show()
+
+    # Current Density vs NPV
+
+    x = []
+    y = []
+    cd = cd_lower
+    cd_step = (cd_upper-cd_lower)/scatter_step
+
+    for i in range(0, scatter_step):
+        x.append(cd)
+        results = HMFOR_TEA(*HMFOR_inputs[:11], cd, cv, *HMFOR_inputs[13:])
+        y.append(results[0])
+        cd += cd_step
+
+    plt.plot(x, y)
+    plt.title('Current Density vs NPV')
+    plt.xlabel('Current Density [A/cm^2]')
+    plt.ylabel('Net Present Value [$]')
     plt.show()
 
     return([NPV_base, payback_time_base])

@@ -2,6 +2,7 @@ import matplotlib.transforms as transforms
 import matplotlib.pyplot as plt
 import numpy as np
 import pygal
+from io import StringIO
 
 # _______________________ Inputs _________________________
 # Economic Parameters
@@ -179,7 +180,6 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     cap_cost_pie.add('Balance', round(cap_costs[2], 2))
 
     cap_cost_pie_data = cap_cost_pie.render_data_uri()
-
     """
     # ________Sensitivity Analysis Charts__________
 
@@ -319,8 +319,16 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
                           xytext=(16, 0), textcoords='offset points',
                           size=10,
                           va='center')
-    plt.show()
 
+    figfile = StringIO()
+    plt.savefig(figfile, format='svg')
+    # figdata_svg = figfile.buf
+    # figdata_svg = '<svg' + figfile.buf.split('<svg')[1]
+    figdata_svg = '<svg' + figfile.split('<svg')[1]
+
+    # plt.show()
+    """
+    """
     # ________Color Scatter Charts__________
 
     scatter_step = 200
@@ -447,7 +455,8 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     
     return([NPV_base, payback_time_base])
     """
-    return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data]
+    # return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, figdata_svg]
+    return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, 0]
 
 
 HMFOR_inputs = [product_production, product_price, operating_time,
@@ -455,6 +464,6 @@ HMFOR_inputs = [product_production, product_price, operating_time,
                 electrolyzer_reference_cost, income_tax, interest_rate, plant_lifetime,
                 current_density, cell_voltage, faradaic_efficiency, fdca_yield, electrolyte_density]
 
-print(HMFOR_TEA(*HMFOR_inputs))
+# print(HMFOR_TEA(*HMFOR_inputs))
 
 # print(HMFOR_plots(HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1))

@@ -60,9 +60,10 @@ def pygal_example():
 @app.route('/hmfor_plots')
 def hmfor_plots():
 
-    [op_cost, op_cost_no_hmf, cap_cost] = HMFOR_plots(
+    [op_cost, op_cost_no_hmf, cap_cost, sensitivity_analysis] = HMFOR_plots(
         HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1)
     return render_template('charts.html', op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost)
+    # return render_template('charts.html', op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost, sensitivity_analysis=sensitivity_analysis)
 
 
 if __name__ == '__main__':

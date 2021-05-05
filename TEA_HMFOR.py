@@ -1,6 +1,7 @@
 import matplotlib.transforms as transforms
 import matplotlib.pyplot as plt
 import numpy as np
+import pygal
 
 # _______________________ Inputs _________________________
 # Economic Parameters
@@ -150,28 +151,36 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     # ________Pie Charts__________
 
     # Operating Costs
-    op_costs_labels = ["Electricity", "Maintenance",
-                       "Crystallization", "Water", "HMF input"]
-    op_costs_explode = [0, 0, 0, 0, 0.2]
-    plt.pie(op_costs, labels=op_costs_labels,
-            explode=op_costs_explode, autopct='%1.1f%%')
-    plt.title('Operating Cost Breakdown')
-    plt.show()
+    op_cost_pie = pygal.Pie()
+    op_cost_pie.title = 'Annual Operating Cost Breakdown ($)'
+    op_cost_pie.add('Electricity', round(op_costs[0], 2))
+    op_cost_pie.add('Maintenance', round(op_costs[1], 2))
+    op_cost_pie.add('Crystallization', round(op_costs[2], 2))
+    op_cost_pie.add('Water', round(op_costs[3], 2))
+    op_cost_pie.add('HMF input', round(op_costs[4], 2))
+
+    op_cost_pie_data = op_cost_pie.render_data_uri()
 
     # Operating Costs without HMF
-    op_costs_no_hmf_labels = ["Electricity", "Maintenance",
-                              "Crystallization", "Water"]
-    plt.pie(op_costs[:-1], labels=op_costs_no_hmf_labels, autopct='%1.1f%%')
-    plt.title('Operating Cost Breakdown Excluding HMF Cost')
-    plt.show()
+    op_cost_pie_no_hmf = pygal.Pie()
+    op_cost_pie_no_hmf.title = 'Annual Operating Cost Breakdown Excluding HMF ($)'
+    op_cost_pie_no_hmf.add('Electricity', round(op_costs[0], 2))
+    op_cost_pie_no_hmf.add('Maintenance', round(op_costs[1], 2))
+    op_cost_pie_no_hmf.add('Crystallization', round(op_costs[2], 2))
+    op_cost_pie_no_hmf.add('Water', round(op_costs[3], 2))
+
+    op_cost_pie_no_hmf_data = op_cost_pie_no_hmf.render_data_uri()
 
     # Capital Costs
-    cap_costs_labels = ["Electrolyzer", "Crystallizer",
-                        "Balance of Plant"]
-    plt.pie(cap_costs, labels=cap_costs_labels, autopct='%1.1f%%')
-    plt.title('Capital Cost Breakdown')
-    plt.show()
+    cap_cost_pie = pygal.Pie()
+    cap_cost_pie.title = 'Capital Cost Breakdown ($)'
+    cap_cost_pie.add('Electrolyzer', round(cap_costs[0], 2))
+    cap_cost_pie.add('Crystallizer', round(cap_costs[1], 2))
+    cap_cost_pie.add('Balance', round(cap_costs[2], 2))
 
+    cap_cost_pie_data = cap_cost_pie.render_data_uri()
+
+    """
     # ________Sensitivity Analysis Charts__________
 
     # Set up scenarios (+/- 10%)
@@ -435,8 +444,10 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     plt.xlabel('Current Density [A/cm^2]')
     plt.ylabel('Net Present Value [$]')
     plt.show()
-
+    
     return([NPV_base, payback_time_base])
+    """
+    return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data]
 
 
 HMFOR_inputs = [product_production, product_price, operating_time,
@@ -444,6 +455,6 @@ HMFOR_inputs = [product_production, product_price, operating_time,
                 electrolyzer_reference_cost, income_tax, interest_rate, plant_lifetime,
                 current_density, cell_voltage, faradaic_efficiency, fdca_yield, electrolyte_density]
 
-# print(HMFOR_TEA(*HMFOR_inputs))
+print(HMFOR_TEA(*HMFOR_inputs))
 
-print(HMFOR_plots(HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1))
+# print(HMFOR_plots(HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1))

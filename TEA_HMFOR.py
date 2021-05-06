@@ -427,21 +427,27 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
         yld += yld_step
         cv = cv_lower
 
-    plt.scatter(x, y, edgecolors='none', s=3, c=yld_cv_npv)
-    plt.colorbar(label='Net Present Value [$]')
-    plt.scatter(HMFOR_inputs[14], HMFOR_inputs[12],
-                edgecolors='black', s=8, c='b')
-    plt.title('FDCA Yield vs Cell Voltage')
-    plt.xlabel('FDCA Yield')
-    plt.ylabel('Cell Voltage [V]')
-    plt.xlim(yield_lower, yield_upper)
-    plt.xticks(np.arange(yield_lower, yield_upper +
-                         10 ** -8, (yield_lower-yield_upper)/4))
-    plt.ylim(cv_lower, cv_upper)
-    plt.yticks(np.arange(cv_lower, cv_upper + 10 ** -8, (cv_upper-cv_lower)/4))
-    plt.show()
+    fig = Figure()
 
-    """
+    ax = fig.add_subplot(111)
+    im = ax.scatter(x, y, s=3, c=yld_cv_npv)
+    ax.scatter(HMFOR_inputs[14], HMFOR_inputs[12],
+               edgecolors='black', s=8, c='b')
+    ax.set_xlabel('FDCA Yield')
+    ax.set_ylabel('Cell Voltage $[V]$')
+    ax.set_title('FDCA Yield vs Cell Voltage')
+    ax.set_xlim(yield_lower, yield_upper)
+    ax.set_ylim(cv_lower, cv_upper)
+    ax.set_xticks(np.arange(yield_lower, yield_upper +
+                            10 ** -8, (yield_upper-yield_lower)/4))
+    ax.set_yticks(np.arange(cv_lower, cv_upper +
+                            10 ** -8, (cv_upper-cv_lower)/4))
+
+    fig.colorbar(im, ax=ax, label='Net Present Value [$]')
+
+    yld_cv_output = io.BytesIO()
+    FigureCanvasSVG(fig).print_svg(yld_cv_output)
+
     # Current Density vs NPV
 
     x = []
@@ -455,16 +461,27 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
         y.append(results[0])
         cd += cd_step
 
-    plt.plot(x, y)
-    plt.title('Current Density vs NPV')
-    plt.xlabel('Current Density [A/cm^2]')
-    plt.ylabel('Net Present Value [$]')
-    plt.show()
+    # Using Pygal
+    # xy_chart = pygal.XY(stroke=False)
+    # xy_chart.title = 'Current Density vs NPV ($)'
+    # xy_chart.add('Current Density $[A/cm^2]$',
+    #              [(x[i], y[i]) for i in range(0, len(x))])
 
-    return([NPV_base, payback_time_base])
-    """
-    # return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, figdata_svg]
-    return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, SA_output, cd_cv_output, fe_cv_output]
+    # cd_npv = xy_chart.render_data_uri()
+
+    fig = Figure()
+    ax = fig.add_subplot(111)
+    im = ax.scatter(x, y)
+    ax.set_title('Current Density vs NPV')
+    ax.set_xlabel('Current Density $[A/cm^2]$')
+    ax.set_ylabel('Net Present Value [$]')
+
+    cd_npv_output = io.BytesIO()
+    FigureCanvasSVG(fig).print_svg(cd_npv_output)
+
+    # return([NPV_base, payback_time_base])
+
+    return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, SA_output, cd_cv_output, fe_cv_output, yld_cv_output, cd_npv_output]
 
 
 HMFOR_inputs = [product_production, product_price, operating_time,

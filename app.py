@@ -38,27 +38,26 @@ def hmfor(prod, prod_price, op_time,
 @app.route('/hmfor_plots')
 def hmfor_plots():
 
-    [op_cost, op_cost_no_hmf, cap_cost, SA_output, cd_cv_output, fe_cv_output] = HMFOR_plots(
+    [op_cost, op_cost_no_hmf, cap_cost, SA_output, cd_cv_output, fe_cv_output, yld_cv_output, cd_npv_output] = HMFOR_plots(
         HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1)
 
-    return Response(fe_cv_output.getvalue(), mimetype="image/svg+xml")
+    return Response(cd_npv_output.getvalue(), mimetype="image/svg+xml")
 
     # return render_template('charts.html', op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost)
     # return render_template('charts.html', op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost, sen_ana=sen_ana)
 
 
-@app.route('/matplot')
-def plot_svg(num_x_points=50):
-    """ renders the plot on the fly.
-    """
-    fig = Figure()
-    axis = fig.add_subplot(1, 1, 1)
-    x_points = range(num_x_points)
-    axis.plot(x_points, range(num_x_points))
+# @app.route('/matplot')
+# def plot_svg(num_x_points=50):
+#     """ renders the plot on the fly."""
+#     fig = Figure()
+#     axis = fig.add_subplot(1, 1, 1)
+#     x_points = range(num_x_points)
+#     axis.plot(x_points, range(num_x_points))
 
-    output = io.BytesIO()
-    FigureCanvasSVG(fig).print_svg(output)
-    return Response(output.getvalue(), mimetype="image/svg+xml")
+#     output = io.BytesIO()
+#     FigureCanvasSVG(fig).print_svg(output)
+#     return Response(output.getvalue(), mimetype="image/svg+xml")
 
 
 if __name__ == '__main__':

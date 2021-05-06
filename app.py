@@ -1,8 +1,12 @@
 from TEA_HMFOR import HMFOR_TEA, HMFOR_inputs, HMFOR_plots
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, Response
 import os
 import sys
 import pygal
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+import io
+from matplotlib.backends.backend_svg import FigureCanvasSVG
 
 print(sys.executable)
 
@@ -64,6 +68,20 @@ def hmfor_plots():
         HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1)
     return render_template('charts.html', op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost)
     # return render_template('charts.html', op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost, sensitivity_analysis=sensitivity_analysis)
+
+
+@app.route('/matplot')
+def plot_svg(num_x_points=50):
+    """ renders the plot on the fly.
+    """
+    fig = Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    x_points = range(num_x_points)
+    axis.plot(x_points, range(num_x_points))
+
+    output = io.BytesIO()
+    FigureCanvasSVG(fig).print_svg(output)
+    return Response(output.getvalue(), mimetype="image/svg+xml")
 
 
 if __name__ == '__main__':

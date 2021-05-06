@@ -180,7 +180,7 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     cap_cost_pie.add('Balance', round(cap_costs[2], 2))
 
     cap_cost_pie_data = cap_cost_pie.render_data_uri()
-    """
+
     # ________Sensitivity Analysis Charts__________
 
     # Set up scenarios (+/- 10%)
@@ -327,7 +327,7 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     figdata_svg = '<svg' + figfile.split('<svg')[1]
 
     # plt.show()
-    """
+
     """
     # ________Color Scatter Charts__________
 

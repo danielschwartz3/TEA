@@ -386,7 +386,6 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
         cv = cv_lower
 
     fig = Figure()
-    # fig = plt.figure()
 
     ax = fig.add_subplot(111)
     im = ax.scatter(x, y, s=3, c=fe_cv_npv)
@@ -407,7 +406,6 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     fe_cv_output = io.BytesIO()
     FigureCanvasSVG(fig).print_svg(fe_cv_output)
 
-    """
     # Yield (x) vs Voltage (y)
 
     x = []
@@ -443,6 +441,7 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     plt.yticks(np.arange(cv_lower, cv_upper + 10 ** -8, (cv_upper-cv_lower)/4))
     plt.show()
 
+    """
     # Current Density vs NPV
 
     x = []

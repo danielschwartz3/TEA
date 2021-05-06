@@ -38,10 +38,10 @@ def hmfor(prod, prod_price, op_time,
 @app.route('/hmfor_plots')
 def hmfor_plots():
 
-    [op_cost, op_cost_no_hmf, cap_cost, SA_output] = HMFOR_plots(
+    [op_cost, op_cost_no_hmf, cap_cost, SA_output, cd_cv_output] = HMFOR_plots(
         HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1)
 
-    return Response(SA_output.getvalue(), mimetype="image/svg+xml")
+    return Response(cd_cv_output.getvalue(), mimetype="image/svg+xml")
 
     # return render_template('charts.html', op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost)
     # return render_template('charts.html', op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost, sen_ana=sen_ana)

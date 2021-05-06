@@ -326,20 +326,12 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     SA_output = io.BytesIO()
     FigureCanvasSVG(fig).print_svg(SA_output)
 
-    # figfile = StringIO()
-    # plt.savefig(figfile, format='svg')
-    # # figdata_svg = figfile.buf
-    # # figdata_svg = '<svg' + figfile.buf.split('<svg')[1]
-    # figdata_svg = '<svg' + figfile.split('<svg')[1]
-
-    # plt.show()
-
     # ________Color Scatter Charts__________
 
     scatter_step = 200
 
     # Current Density (x) vs Voltage (y)
-    """
+
     x = []
     y = []
     cd_cv_npv = []
@@ -357,25 +349,49 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
             cv += cv_step
         cd += cd_step
         cv = cv_lower
-    
+
+    # fig = plt.figure()
     fig = Figure()
-    ax=fig.add_axes([0,0,1,1])
-    ax.scatter(x, y, color=cd_cv_npv)
 
-    plt.scatter(x, y, edgecolors='none', s=3, c=cd_cv_npv)
-    plt.colorbar(label='Net Present Value [$]')
-    plt.scatter(HMFOR_inputs[11], HMFOR_inputs[12],
-                edgecolors='black', s=8, c='b')
-    plt.title('Current Density vs Cell Voltage')
-    plt.xlabel('Current Density [A/cm^2]')
-    plt.ylabel('Cell Voltage [V]')
-    plt.xlim(cd_lower, cd_upper)
-    plt.xticks(np.arange(cd_lower, cd_upper + 10 ** -8, (cd_upper-cd_lower)/4))
-    plt.ylim(cv_lower, cv_upper)
-    plt.yticks(np.arange(cv_lower, cv_upper + 10 ** -8, (cv_upper-cv_lower)/4))
-    plt.show()
+    ax = fig.add_subplot(111)
+    im = ax.scatter(x, y, s=3, c=cd_cv_npv)
+    ax.scatter(HMFOR_inputs[11], HMFOR_inputs[12],
+               edgecolors='black', s=8, c='b')
+    ax.set_xlabel('Current Density $[A/cm^2]$')
+    ax.set_ylabel('Cell Voltage $[V]$')
+    ax.set_title('Current Density vs Cell Voltage')
+    ax.set_xlim(cd_lower, cd_upper)
+    ax.set_ylim(cv_lower, cv_upper)
+    ax.set_xticks(np.arange(cd_lower, cd_upper +
+                            10 ** -8, (cd_upper-cd_lower)/4))
+    ax.set_yticks(np.arange(cv_lower, cv_upper +
+                            10 ** -8, (cv_upper-cv_lower)/4))
 
-    
+    fig.colorbar(im, ax=ax, label='Net Present Value [$]')
+    # fig.colorbar(label='Net Present Value [$]')
+    # fig.colorbar(cd_cv_npv.ScalarMappable(norm=None, cmap=cmap), ax=ax)
+    # im = ax.imshow(data, cmap='bone')
+    # fig.colorbar(im, cax=cax, orientation='vertical')
+
+    # plt.show()
+
+    cd_cv_output = io.BytesIO()
+    FigureCanvasSVG(fig).print_svg(cd_cv_output)
+
+    # plt.scatter(x, y, edgecolors='none', s=3, c=cd_cv_npv)
+    # plt.colorbar(label='Net Present Value [$]')
+    # plt.scatter(HMFOR_inputs[11], HMFOR_inputs[12],
+    #             edgecolors='black', s=8, c='b')
+    # plt.title('Current Density vs Cell Voltage')
+    # plt.xlabel('Current Density [A/cm^2]')
+    # plt.ylabel('Cell Voltage [V]')
+    # plt.xlim(cd_lower, cd_upper)
+    # plt.xticks(np.arange(cd_lower, cd_upper + 10 ** -8, (cd_upper-cd_lower)/4))
+    # plt.ylim(cv_lower, cv_upper)
+    # plt.yticks(np.arange(cv_lower, cv_upper + 10 ** -8, (cv_upper-cv_lower)/4))
+    # plt.show()
+
+    """
     # FE (x) vs Voltage (y)
 
     x = []
@@ -466,7 +482,7 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     return([NPV_base, payback_time_base])
     """
     # return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, figdata_svg]
-    return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, SA_output]
+    return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, SA_output, cd_cv_output]
 
 
 HMFOR_inputs = [product_production, product_price, operating_time,

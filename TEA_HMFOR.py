@@ -2,7 +2,10 @@ import matplotlib.transforms as transforms
 import matplotlib.pyplot as plt
 import numpy as np
 import pygal
-from io import StringIO
+import io
+from matplotlib.figure import Figure
+import io
+from matplotlib.backends.backend_svg import FigureCanvasSVG
 
 # _______________________ Inputs _________________________
 # Economic Parameters
@@ -250,7 +253,7 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     pos = np.arange(num_vars) + .5
 
     # make the left and right axes
-    fig = plt.figure(facecolor='white', edgecolor='none')
+    fig = Figure()
     ax_lower = fig.add_axes([0.05, 0.1, 0.35, 0.8])
     ax_upper = fig.add_axes([0.6, 0.1, 0.35, 0.8])
 
@@ -320,21 +323,23 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
                           size=10,
                           va='center')
 
-    figfile = StringIO()
-    plt.savefig(figfile, format='svg')
-    # figdata_svg = figfile.buf
-    # figdata_svg = '<svg' + figfile.buf.split('<svg')[1]
-    figdata_svg = '<svg' + figfile.split('<svg')[1]
+    SA_output = io.BytesIO()
+    FigureCanvasSVG(fig).print_svg(SA_output)
+
+    # figfile = StringIO()
+    # plt.savefig(figfile, format='svg')
+    # # figdata_svg = figfile.buf
+    # # figdata_svg = '<svg' + figfile.buf.split('<svg')[1]
+    # figdata_svg = '<svg' + figfile.split('<svg')[1]
 
     # plt.show()
 
-    """
     # ________Color Scatter Charts__________
 
     scatter_step = 200
 
     # Current Density (x) vs Voltage (y)
-
+    """
     x = []
     y = []
     cd_cv_npv = []
@@ -352,6 +357,10 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
             cv += cv_step
         cd += cd_step
         cv = cv_lower
+    
+    fig = Figure()
+    ax=fig.add_axes([0,0,1,1])
+    ax.scatter(x, y, color=cd_cv_npv)
 
     plt.scatter(x, y, edgecolors='none', s=3, c=cd_cv_npv)
     plt.colorbar(label='Net Present Value [$]')
@@ -366,6 +375,7 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     plt.yticks(np.arange(cv_lower, cv_upper + 10 ** -8, (cv_upper-cv_lower)/4))
     plt.show()
 
+    
     # FE (x) vs Voltage (y)
 
     x = []
@@ -456,7 +466,7 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     return([NPV_base, payback_time_base])
     """
     # return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, figdata_svg]
-    return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, 0]
+    return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, SA_output]
 
 
 HMFOR_inputs = [product_production, product_price, operating_time,
@@ -466,4 +476,4 @@ HMFOR_inputs = [product_production, product_price, operating_time,
 
 # print(HMFOR_TEA(*HMFOR_inputs))
 
-# print(HMFOR_plots(HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1))
+HMFOR_plots(HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1)

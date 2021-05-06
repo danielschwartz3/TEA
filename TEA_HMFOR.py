@@ -365,7 +365,6 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     cd_cv_output = io.BytesIO()
     FigureCanvasSVG(fig).print_svg(cd_cv_output)
 
-    """
     # FE (x) vs Voltage (y)
 
     x = []
@@ -386,19 +385,29 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
         FE += FE_step
         cv = cv_lower
 
-    plt.scatter(x, y, edgecolors='none', s=3, c=fe_cv_npv)
-    plt.colorbar(label='Net Present Value [$]')
-    plt.scatter(HMFOR_inputs[13], HMFOR_inputs[12],
-                edgecolors='black', s=8, c='b')
-    plt.title('Faradaic Efficienct vs Cell Voltage')
-    plt.xlabel('Faradaic Efficiency')
-    plt.ylabel('Cell Voltage [V]')
-    plt.xlim(FE_lower, FE_upper)
-    plt.xticks(np.arange(FE_lower, FE_upper + 10 ** -8, (FE_upper-FE_lower)/4))
-    plt.ylim(cv_lower, cv_upper)
-    plt.yticks(np.arange(cv_lower, cv_upper + 10 ** -8, (cv_upper-cv_lower)/4))
-    plt.show()
+    fig = Figure()
+    # fig = plt.figure()
 
+    ax = fig.add_subplot(111)
+    im = ax.scatter(x, y, s=3, c=fe_cv_npv)
+    ax.scatter(HMFOR_inputs[13], HMFOR_inputs[12],
+               edgecolors='black', s=8, c='b')
+    ax.set_xlabel('Faradaic Efficiency')
+    ax.set_ylabel('Cell Voltage $[V]$')
+    ax.set_title('Faradaic Efficienct vs Cell Voltage')
+    ax.set_xlim(FE_lower, FE_upper)
+    ax.set_ylim(cv_lower, cv_upper)
+    ax.set_xticks(np.arange(FE_lower, FE_upper +
+                            10 ** -8, (FE_upper-FE_lower)/4))
+    ax.set_yticks(np.arange(cv_lower, cv_upper +
+                            10 ** -8, (cv_upper-cv_lower)/4))
+
+    fig.colorbar(im, ax=ax, label='Net Present Value [$]')
+
+    fe_cv_output = io.BytesIO()
+    FigureCanvasSVG(fig).print_svg(fe_cv_output)
+
+    """
     # Yield (x) vs Voltage (y)
 
     x = []
@@ -452,11 +461,11 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     plt.xlabel('Current Density [A/cm^2]')
     plt.ylabel('Net Present Value [$]')
     plt.show()
-    
+
     return([NPV_base, payback_time_base])
     """
     # return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, figdata_svg]
-    return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, SA_output, cd_cv_output]
+    return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, SA_output, cd_cv_output, fe_cv_output]
 
 
 HMFOR_inputs = [product_production, product_price, operating_time,

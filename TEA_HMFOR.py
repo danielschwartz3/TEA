@@ -257,12 +257,6 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     ax_lower = fig.add_axes([0.05, 0.1, 0.35, 0.8])
     ax_upper = fig.add_axes([0.6, 0.1, 0.35, 0.8])
 
-    # step_lower = max([abs(ele) for ele in sa_lower])/4
-    # step_upper = max([abs(ele) for ele in sa_upper])/4
-
-    # ax_upper.set_xticks(np.arange(0.05, 4*step_upper, step_upper))
-    # ax_lower.set_xticks(np.arange(0.05, 4*step_lower, step_lower))
-
     # just tick on the top
     ax_lower.xaxis.set_ticks_position('top')
     ax_upper.xaxis.set_ticks_position('top')
@@ -350,7 +344,6 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
         cd += cd_step
         cv = cv_lower
 
-    # fig = plt.figure()
     fig = Figure()
 
     ax = fig.add_subplot(111)
@@ -368,28 +361,9 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
                             10 ** -8, (cv_upper-cv_lower)/4))
 
     fig.colorbar(im, ax=ax, label='Net Present Value [$]')
-    # fig.colorbar(label='Net Present Value [$]')
-    # fig.colorbar(cd_cv_npv.ScalarMappable(norm=None, cmap=cmap), ax=ax)
-    # im = ax.imshow(data, cmap='bone')
-    # fig.colorbar(im, cax=cax, orientation='vertical')
-
-    # plt.show()
 
     cd_cv_output = io.BytesIO()
     FigureCanvasSVG(fig).print_svg(cd_cv_output)
-
-    # plt.scatter(x, y, edgecolors='none', s=3, c=cd_cv_npv)
-    # plt.colorbar(label='Net Present Value [$]')
-    # plt.scatter(HMFOR_inputs[11], HMFOR_inputs[12],
-    #             edgecolors='black', s=8, c='b')
-    # plt.title('Current Density vs Cell Voltage')
-    # plt.xlabel('Current Density [A/cm^2]')
-    # plt.ylabel('Cell Voltage [V]')
-    # plt.xlim(cd_lower, cd_upper)
-    # plt.xticks(np.arange(cd_lower, cd_upper + 10 ** -8, (cd_upper-cd_lower)/4))
-    # plt.ylim(cv_lower, cv_upper)
-    # plt.yticks(np.arange(cv_lower, cv_upper + 10 ** -8, (cv_upper-cv_lower)/4))
-    # plt.show()
 
     """
     # FE (x) vs Voltage (y)

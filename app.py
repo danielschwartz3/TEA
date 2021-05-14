@@ -9,7 +9,7 @@ import io
 from matplotlib.backends.backend_svg import FigureCanvasSVG
 import matplotlib.transforms as transforms
 import numpy as np
-
+import base64
 
 print(sys.executable)
 
@@ -37,27 +37,20 @@ def hmfor(prod, prod_price, op_time,
 
 @app.route('/hmfor_plots')
 def hmfor_plots():
+    try:
+        [op_cost, op_cost_no_hmf, cap_cost, SA_output, cd_cv_output, fe_cv_output, yld_cv_output, cd_npv_output] = HMFOR_plots(
+            HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1)
 
-    [op_cost, op_cost_no_hmf, cap_cost, SA_output, cd_cv_output, fe_cv_output, yld_cv_output, cd_npv_output] = HMFOR_plots(
-        HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1)
+        # Extracting values of StringIO
+        SA = SA_output.getvalue()
+        cd_cv = cd_cv_output.getvalue()
+        fe_cv = fe_cv_output.getvalue()
+        yld_cv = yld_cv_output.getvalue()
+        cd_npv = cd_npv_output.getvalue()
 
-    return Response(cd_npv_output.getvalue(), mimetype="image/svg+xml")
-
-    # return render_template('charts.html', op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost)
-    # return render_template('charts.html', op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost, sen_ana=sen_ana)
-
-
-# @app.route('/matplot')
-# def plot_svg(num_x_points=50):
-#     """ renders the plot on the fly."""
-#     fig = Figure()
-#     axis = fig.add_subplot(1, 1, 1)
-#     x_points = range(num_x_points)
-#     axis.plot(x_points, range(num_x_points))
-
-#     output = io.BytesIO()
-#     FigureCanvasSVG(fig).print_svg(output)
-#     return Response(output.getvalue(), mimetype="image/svg+xml")
+        return render_template('charts.html', op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost, SA=SA, cd_cv=cd_cv, fe_cv=fe_cv, yld_cv=yld_cv, cd_npv=cd_npv)
+    except Exception as e:
+        return "The following error has occured: " + str(e)
 
 
 if __name__ == '__main__':

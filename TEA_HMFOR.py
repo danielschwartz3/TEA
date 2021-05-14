@@ -317,8 +317,14 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
                           size=10,
                           va='center')
 
-    SA_output = io.BytesIO()
+    # SA_output = io.BytesIO()
+    SA_output = io.StringIO()
     FigureCanvasSVG(fig).print_svg(SA_output)
+
+    # SA_output = io.StringIO()
+    # fig.savefig(SA_output, format="svg")
+    # SA_output.seek(0)
+    # SA_output = SA_output.buf[SA_output.buf.find("<svg"):]
 
     # ________Color Scatter Charts__________
 
@@ -362,7 +368,7 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
 
     fig.colorbar(im, ax=ax, label='Net Present Value [$]')
 
-    cd_cv_output = io.BytesIO()
+    cd_cv_output = io.StringIO()
     FigureCanvasSVG(fig).print_svg(cd_cv_output)
 
     # FE (x) vs Voltage (y)
@@ -403,7 +409,7 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
 
     fig.colorbar(im, ax=ax, label='Net Present Value [$]')
 
-    fe_cv_output = io.BytesIO()
+    fe_cv_output = io.StringIO()
     FigureCanvasSVG(fig).print_svg(fe_cv_output)
 
     # Yield (x) vs Voltage (y)
@@ -445,7 +451,7 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
 
     fig.colorbar(im, ax=ax, label='Net Present Value [$]')
 
-    yld_cv_output = io.BytesIO()
+    yld_cv_output = io.StringIO()
     FigureCanvasSVG(fig).print_svg(yld_cv_output)
 
     # Current Density vs NPV
@@ -476,11 +482,11 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     ax.set_xlabel('Current Density $[A/cm^2]$')
     ax.set_ylabel('Net Present Value [$]')
 
-    cd_npv_output = io.BytesIO()
+    cd_npv_output = io.StringIO()
     FigureCanvasSVG(fig).print_svg(cd_npv_output)
 
     # return([NPV_base, payback_time_base])
-
+    # print(SA_output.getvalue())
     return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, SA_output, cd_cv_output, fe_cv_output, yld_cv_output, cd_npv_output]
 
 

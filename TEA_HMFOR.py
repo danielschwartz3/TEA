@@ -317,14 +317,8 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
                           size=10,
                           va='center')
 
-    # SA_output = io.BytesIO()
     SA_output = io.StringIO()
     FigureCanvasSVG(fig).print_svg(SA_output)
-
-    # SA_output = io.StringIO()
-    # fig.savefig(SA_output, format="svg")
-    # SA_output.seek(0)
-    # SA_output = SA_output.buf[SA_output.buf.find("<svg"):]
 
     # ________Color Scatter Charts__________
 
@@ -485,8 +479,6 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
     cd_npv_output = io.StringIO()
     FigureCanvasSVG(fig).print_svg(cd_npv_output)
 
-    # return([NPV_base, payback_time_base])
-    # print(SA_output.getvalue())
     return [op_cost_pie_data, op_cost_pie_no_hmf_data, cap_cost_pie_data, SA_output, cd_cv_output, fe_cv_output, yld_cv_output, cd_npv_output]
 
 
@@ -497,4 +489,4 @@ HMFOR_inputs = [product_production, product_price, operating_time,
 
 # print(HMFOR_TEA(*HMFOR_inputs))
 
-HMFOR_plots(HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1)
+# HMFOR_plots(HMFOR_inputs, 0.02, 0.06, 1, 2, 0.8, 1, 0.8, 1)

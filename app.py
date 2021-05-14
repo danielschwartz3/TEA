@@ -1,15 +1,7 @@
 from TEA_HMFOR import HMFOR_TEA, HMFOR_inputs, HMFOR_plots
-from flask import Flask, jsonify, render_template, Response
-import os
+from flask import Flask, jsonify, render_template
 import sys
-import pygal
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
-import io
-from matplotlib.backends.backend_svg import FigureCanvasSVG
-import matplotlib.transforms as transforms
-import numpy as np
-import base64
+
 
 print(sys.executable)
 

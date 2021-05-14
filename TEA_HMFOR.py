@@ -142,8 +142,9 @@ def HMFOR_TEA(product_production: float, product_price: float, operating_time: f
             CF += dep[i-1] * total_capital * income_tax
         NPV += CF * discount_facor
 
-    return([NPV, payback_time, product_income, [electricity_operating, maintenance_operating,
-                                                crystal_operating, water_operating, hmf_operating], [electrolyzer_captital, crystal_captital, plant_capital]])
+    annual_op_costs = np.array([electricity_operating, maintenance_operating,
+                                crystal_operating, water_operating, hmf_operating]) * operating_time
+    return([NPV, payback_time, product_income, annual_op_costs, [electrolyzer_captital, crystal_captital, plant_capital]])
 
 
 def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, FE_upper, yield_lower, yield_upper):

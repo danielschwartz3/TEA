@@ -26,7 +26,7 @@ def form_response():
     op_time = validateNum(request.form.get("op_time"), 350.0)
     elec_p = validateNum(request.form.get("elec_p"), 0.02)
     h2_p = validateNum(request.form.get("h2_p"), 1.5)
-    h2o_p = validateNum(request.form.get("h2o_p"), 0.001423)
+    h2o_p = validateNum(request.form.get("h2o_p"), 0.00143)
     hmf_p = validateNum(request.form.get("hmf_p"), 0.9095)
     elec_ref = validateNum(request.form.get("elec_ref"), 920.0)
     t = validateNum(request.form.get("t"), 0.389)
@@ -37,11 +37,31 @@ def form_response():
     FE = validateNum(request.form.get("FE"), 1.0)
     fdca_y = validateNum(request.form.get("fdca_y"), 0.98)
     elec_den = validateNum(request.form.get("elec_den"), 2.13)
+    cd_low = validateNum(request.form.get("cd_low"), 0.02)
+    cd_high = validateNum(request.form.get("cd_high"), 0.06)
+    cv_low = validateNum(request.form.get("cv_low"), 1.0)
+    cv_high = validateNum(request.form.get("cv_high"), 2.0)
+    fe_low = validateNum(request.form.get("fe_low"), 0.8)
+    fe_high = validateNum(request.form.get("fe_high"), 1.0)
+    yld_low = validateNum(request.form.get("yld_low"), 0.8)
+    yld_high = validateNum(request.form.get("yld_high"), 1.0)
+
+    HMFOR_inputs = [prod, prod_price, op_time,
+                    elec_p, h2_p, h2o_p, hmf_p,
+                    elec_ref, t, r, plant_life,
+                    cur_den, cell_v, FE, fdca_y, elec_den]
+    [NPV, payback_time, product_income, op_costs,
+        cap_costs] = HMFOR_TEA(*HMFOR_inputs)
+
+    HMFOR_plots(
+        HMFOR_inputs, cd_low, cd_high, cv_low, cv_high, fe_low, fe_high, yld_low, yld_high)
 
     return render_template('form.html', prod=prod, prod_price=prod_price, op_time=op_time,
                            elec_p=elec_p, h2_p=h2_p, h2o_p=h2o_p, hmf_p=hmf_p,
                            elec_ref=elec_ref, t=t, r=r, plant_life=plant_life,
-                           cur_den=cur_den, cell_v=cell_v, FE=FE, fdca_y=fdca_y, elec_den=elec_den)
+                           cur_den=cur_den, cell_v=cell_v, FE=FE, fdca_y=fdca_y, elec_den=elec_den, NPV=NPV,
+                           cd_low=cd_low, cd_high=cd_high, cv_low=cv_low, cv_high=cv_high,
+                           fe_low=fe_low, fe_high=fe_high, yld_low=yld_low, yld_high=yld_high)
 
 # Sample endpoint: /HMFOR/production=100000.0/fdca_p=1445.0/t_op=350.0/elec_p=0.02/h2_p=1.5/h2o_p=0.00143/hmf_p=0.9095/elec_ref=920.0/t=0.389/r=0.1/plant_life=20.0/cur_den=0.05/cell_v=1.4/FE=1.0/fdca_y=0.98/elec_den=2.13
 

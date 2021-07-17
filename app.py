@@ -2,8 +2,6 @@ from TEA_HMFOR import HMFOR_TEA, HMFOR_inputs, HMFOR_plots
 from flask import Flask, jsonify, render_template
 import sys
 
-print(sys.executable)
-
 app = Flask(__name__)
 
 

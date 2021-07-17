@@ -323,7 +323,7 @@ def HMFOR_plots(HMFOR_inputs, cd_lower, cd_upper, cv_lower, cv_upper, FE_lower, 
 
     # ________Color Scatter Charts__________
 
-    scatter_step = 200
+    scatter_step = 75
 
     # Current Density (x) vs Voltage (y)
 

@@ -8,8 +8,9 @@
     <title>HMF to FDCA TEA</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -18,6 +19,28 @@
     <![endif]-->
   </head>
   <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="https://electrocatalysislab.com">
+          <img src="../assets/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+          Catalytic and Functional Materials for Green Energy
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
     <div class="container">
       <br></br>
@@ -136,34 +159,34 @@
 
       </br>
 
-      <div>
-          NPV = {{NPV}}
-      </div>
-      <div id="chart">
-        <embed type="image/svg+xml" src= {{ op_cost|safe }} />
-     </div>
-     <div id="chart">
-        <embed type="image/svg+xml" src= {{ op_cost_no_hmf|safe }} />
-     </div>
-     <div id="chart">
-        <embed type="image/svg+xml" src= {{ cap_cost|safe }} />
-     </div>
-     <div id="chart">
-        {{ SA|safe }}
-     </div>
-     <div id="chart">
-        {{ cd_cv|safe }}
-     </div>
-     <div id="chart">
-        {{ fe_cv|safe }}
-     </div>
-     <div id="chart">
-        {{ yld_cv|safe }}
-     </div>
-     <div id="chart">
-        {{ cd_npv|safe }}
-     </div>
+      <div class="container">
 
+        <div>
+            NPV = {{NPV}}
+            <br>
+            Payback Time = {{payback_time}}
+        </div>
+      </div>
+      <div class="container" class="mx-auto">
+        <div id="chart">
+          <embed type="image/svg+xml" src= {{ op_cost|safe }} /> 
+          <embed type="image/svg+xml" src= {{ op_cost_no_hmf|safe }} />
+          <embed type="image/svg+xml" src= {{ cap_cost|safe }} />
+        </div>
+      </div>
+      <div class="container" class="mx-auto">
+        <div id="chart" class="row justify-content-center">
+          {{ cd_cv|safe }}
+          {{ fe_cv|safe }}
+          {{ yld_cv|safe }}
+        </div>
+        <div id="chart" class="row justify-content-center">
+          {{ cd_npv|safe }}
+          <br>
+          {{ SA|safe }}
+        </div>
+      </div>
+    </div>
   </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

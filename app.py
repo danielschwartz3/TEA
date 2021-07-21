@@ -67,7 +67,7 @@ def form_response():
         return render_template('form.html', prod=prod, prod_price=prod_price, op_time=op_time,
                                elec_p=elec_p, h2_p=h2_p, h2o_p=h2o_p, hmf_p=hmf_p,
                                elec_ref=elec_ref, t=t, r=r, plant_life=plant_life,
-                               cur_den=cur_den, cell_v=cell_v, FE=FE, fdca_y=fdca_y, elec_den=elec_den, NPV=NPV,
+                               cur_den=cur_den, cell_v=cell_v, FE=FE, fdca_y=fdca_y, elec_den=elec_den, NPV=NPV, payback_time=payback_time,
                                cd_low=cd_low, cd_high=cd_high, cv_low=cv_low, cv_high=cv_high,
                                fe_low=fe_low, fe_high=fe_high, yld_low=yld_low, yld_high=yld_high, op_cost=op_cost, op_cost_no_hmf=op_cost_no_hmf, cap_cost=cap_cost, SA=SA, cd_cv=cd_cv, fe_cv=fe_cv, yld_cv=yld_cv, cd_npv=cd_npv)
     except Exception as e:

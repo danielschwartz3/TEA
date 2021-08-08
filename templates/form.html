@@ -10,7 +10,10 @@
     <!-- Bootstrap -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -84,73 +87,77 @@
               <label for="h2_p" class="form-label">H2 Price [$/kg]</label>
             <input type="number" step="0.001" class="form-control" id="h2_p" name="h2_p" value={{h2_p}}>
           </div>
+                     
+          <div class="text-center">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#content" >Show More Parameters</button>
+          </div>
 
-          <div class="col-md-4">
+          <div class="collapse" id="content">              
+            <div class="col-md-4">
               <label for="hmf_p" class="form-label">HMF Cost [$/kg] </label>
             <input type="number" step="0.00001" class="form-control" id="hmf_p" name="hmf_p" value={{hmf_p}}>
+            </div>
+            <div class="col-md-4">
+                <label for="h2o_p" class="form-label">Water Cost [$/kg]</label>
+              <input type="number" step="0.00001" class="form-control" id="h2o_p" name="h2o_p" value={{h2o_p}}>
+            </div>
+            <div class="col-md-4">
+                <label for="elec_ref" class="form-label">Electrolyzer Reference cost [$/m^2]</label>
+              <input type="number" step="0.1" class="form-control" id="elec_ref" name="elec_ref" value={{elec_ref}}>
+            </div>
+  
+            <div class="col-md-4">
+                <label for="op_time" class="form-label">Plant Operating Time [days/year]</label>
+              <input type="number" step="0.1" class="form-control" id="op_time" name="op_time" value={{op_time}}>
+            </div>
+            <div class="col-md-4">
+                <label for="t" class="form-label">Income Tax Rate</label>
+              <input type="number" step="0.001" class="form-control" id="t" name="t" value={{t}}>
+            </div>
+            <div class="col-md-4">
+                <label for="r" class="form-label">Nominal Interest Rate</label>
+              <input type="number" step="0.001" class="form-control" id="r" name="r" value={{r}}>
+            </div>
+  
+            <div class="col-md-4">
+                <label for="plant_life" class="form-label">Plant Lifetime [years]</label>
+              <input type="number" step="0.1" class="form-control" id="plant_life" name="plant_life" value={{plant_life}}>
+            </div>
+            <div class="col-md-4">
+                <label for="cd_low" class="form-label">CD Low Range</label>
+              <input type="number" step="0.001" class="form-control" id="cd_low" name="cd_low" value={{cd_low}}>
+            </div>        
+            <div class="col-md-4">
+                <label for="cd_high" class="form-label">CD High Range</label>
+              <input type="number" step="0.001" class="form-control" id="cd_high" name="cd_high" value={{cd_high}}>
+            </div>
+  
+            <div class="col-md-4">
+                <label for="cv_low" class="form-label">CV Low Range</label>
+              <input type="number" step="0.001" class="form-control" id="cv_low" name="cv_low" value={{cv_low}}>
+            </div>
+            <div class="col-md-4">
+                <label for="cv_high" class="form-label">CV High Range</label>
+              <input type="number" step="0.001" class="form-control" id="cv_high" name="cv_high" value={{cv_high}}>
+            </div>
+            <div class="col-md-4">
+                <label for="fe_low" class="form-label">FE Low Range</label>
+              <input type="number" step="0.001" class="form-control" id="fe_low" name="fe_low" value={{fe_low}}>
+            </div>
+  
+            <div class="col-md-4">
+                <label for="fe_high" class="form-label">FE High Range</label>
+              <input type="number" step="0.001" class="form-control" id="fe_high" name="fe_high" value={{fe_high}}>
+            </div>
+            <div class="col-md-4">
+                <label for="yld_low" class="form-label">Yield Low Range</label>
+              <input type="number" step="0.001" class="form-control" id="yld_low" name="yld_low" value={{yld_low}}>
+            </div>
+            <div class="col-md-4">
+                <label for="yld_high" class="form-label">Yield High Range</label>
+              <input type="number" step="0.001" class="form-control" id="yld_high" name="yld_high" value={{yld_high}}>
+            </div>              
           </div>
-          <div class="col-md-4">
-              <label for="h2o_p" class="form-label">Water Cost [$/kg]</label>
-            <input type="number" step="0.00001" class="form-control" id="h2o_p" name="h2o_p" value={{h2o_p}}>
-          </div>
-          <div class="col-md-4">
-              <label for="elec_ref" class="form-label">Electrolyzer Reference cost [$/m^2]</label>
-            <input type="number" step="0.1" class="form-control" id="elec_ref" name="elec_ref" value={{elec_ref}}>
-          </div>
-
-          <div class="col-md-4">
-              <label for="op_time" class="form-label">Plant Operating Time [days/year]</label>
-            <input type="number" step="0.1" class="form-control" id="op_time" name="op_time" value={{op_time}}>
-          </div>
-          <div class="col-md-4">
-              <label for="t" class="form-label">Income Tax Rate</label>
-            <input type="number" step="0.001" class="form-control" id="t" name="t" value={{t}}>
-          </div>
-          <div class="col-md-4">
-              <label for="r" class="form-label">Nominal Interest Rate</label>
-            <input type="number" step="0.001" class="form-control" id="r" name="r" value={{r}}>
-          </div>
-
-          <div class="col-md-4">
-              <label for="plant_life" class="form-label">Plant Lifetime [years]</label>
-            <input type="number" step="0.1" class="form-control" id="plant_life" name="plant_life" value={{plant_life}}>
-          </div>
-          <div class="col-md-4">
-              <label for="cd_low" class="form-label">CD Low Range</label>
-            <input type="number" step="0.001" class="form-control" id="cd_low" name="cd_low" value={{cd_low}}>
-          </div>        
-          <div class="col-md-4">
-              <label for="cd_high" class="form-label">CD High Range</label>
-            <input type="number" step="0.001" class="form-control" id="cd_high" name="cd_high" value={{cd_high}}>
-          </div>
-
-          <div class="col-md-4">
-              <label for="cv_low" class="form-label">CV Low Range</label>
-            <input type="number" step="0.001" class="form-control" id="cv_low" name="cv_low" value={{cv_low}}>
-          </div>
-          <div class="col-md-4">
-              <label for="cv_high" class="form-label">CV High Range</label>
-            <input type="number" step="0.001" class="form-control" id="cv_high" name="cv_high" value={{cv_high}}>
-          </div>
-          <div class="col-md-4">
-              <label for="fe_low" class="form-label">FE Low Range</label>
-            <input type="number" step="0.001" class="form-control" id="fe_low" name="fe_low" value={{fe_low}}>
-          </div>
-
-          <div class="col-md-4">
-              <label for="fe_high" class="form-label">FE High Range</label>
-            <input type="number" step="0.001" class="form-control" id="fe_high" name="fe_high" value={{fe_high}}>
-          </div>
-          <div class="col-md-4">
-              <label for="yld_low" class="form-label">Yield Low Range</label>
-            <input type="number" step="0.001" class="form-control" id="yld_low" name="yld_low" value={{yld_low}}>
-          </div>
-          <div class="col-md-4">
-              <label for="yld_high" class="form-label">Yield High Range</label>
-            <input type="number" step="0.001" class="form-control" id="yld_high" name="yld_high" value={{yld_high}}>
-          </div>
-          
-      </br>
 
       <div class="col-12">
         <button type="submit" id="submit" class="btn btn-primary">Submit</button>
@@ -187,6 +194,22 @@
         </div>
       </div>
     </div>
+
+    <!-- <p>
+      <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Toggle first element</a>
+    </p>
+    <div class="row">
+      <div class="col">
+        <div class="collapse multi-collapse" id="multiCollapseExample1">
+          <div class="card card-body">
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <br> -->
+
   </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

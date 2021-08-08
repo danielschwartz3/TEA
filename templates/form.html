@@ -29,9 +29,6 @@
           <img src="../assets/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
           Catalytic and Functional Materials for Green Energy
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
@@ -48,7 +45,7 @@
     <div class="container">
       <br></br>
 
-      <form class="row g-3" action="/form_response" onsubmit=" submit.innerHTML='Loading...'; submit.disabled = true; return true;" method="POST">
+      <form class="row g-3" action="/form_response" onsubmit=" submitForm()" method="POST">
         
         <div class="container">
           <div class="row">
@@ -83,14 +80,14 @@
             </div>
             <div class="col-md">
               <div class="form-floating">
-                <input type="number" step="0.01" class="form-control" id="elec_den" name="elec_den" placeholder="123" value={{elec_den}}>
-                <label for="elec_den">Electrolyte density [kg/L]</label>
+                <input type="number" step="0.00001" class="form-control" id="hmf_p" name="hmf_p" placeholder="123" value={{hmf_p}}>
+                <label for="hmf_p">HMF Cost [$/kg] </label>
             </div>
             </div>
             <div class="col-md">
               <div class="form-floating">
-                <input ttype="number" step="0.1" class="form-control" id="prod" name="prod" placeholder="123" value={{prod}}>
-                <label for="prod">FDCA production [kg/day]</label>
+                <input type="number" step="0.1" class="form-control" id="elec_ref" name="elec_ref" placeholder="123" value={{elec_ref}}>
+                <label for="elec_ref">Electrolyzer Reference cost [$/m^2]</label>
               </div>
             </div>
           </div>
@@ -121,7 +118,7 @@
         </div>
                     
         <div class="text-center">
-          <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#content" >Show More Parameters</button>
+          <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#content" id="showMore" onClick="toggleMoreParameters()">Show More Parameters</button>
         </div>
 
         <div class="collapse" id="content">  
@@ -131,8 +128,8 @@
               <div class="row">
                 <div class="col-md">
                   <div class="form-floating">
-                    <input type="number" step="0.00001" class="form-control" id="hmf_p" name="hmf_p" placeholder="123" value={{hmf_p}}>
-                    <label for="hmf_p">HMF Cost [$/kg] </label>
+                    <input type="number" step="0.01" class="form-control" id="elec_den" name="elec_den" placeholder="123" value={{elec_den}}>
+                    <label for="elec_den">Electrolyte density [kg/L]</label>
                   </div>
                 </div>
                 <div class="col-md">
@@ -143,8 +140,8 @@
                 </div>
                 <div class="col-md">
                   <div class="form-floating">
-                    <input type="number" step="0.1" class="form-control" id="elec_ref" name="elec_ref" placeholder="123" value={{elec_ref}}>
-                    <label for="elec_ref">Electrolyzer Reference cost [$/m^2]</label>
+                    <input ttype="number" step="0.1" class="form-control" id="prod" name="prod" placeholder="123" value={{prod}}>
+                    <label for="prod">FDCA production [kg/day]</label>
                   </div>
                 </div>
               </div>
@@ -245,10 +242,14 @@
           </div>  
         </div>
 
-      <div class="text-center">
-        <button type="submit" id="submit" class="btn btn-primary">Submit</button>
-      </div>
+        <div class="text-center">
+          <div class="container">
+            <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
       </form>
+
+
 
       </br>
 
@@ -281,11 +282,60 @@
       </div>
     </div>
 
-  </div>
 
+
+    <script>
+      
+      function toggleMoreParameters() {
+        // Toggle the text of the show more parameters button
+
+        var text = document.getElementById("showMore").innerHTML;
+
+        if (text=="Show More Parameters"){
+          document.getElementById("showMore").innerHTML="Show Less Parameters"
+        } 
+        else {
+          document.getElementById("showMore").innerHTML="Show More Parameters"
+        }
+        return true;
+      }
+
+      function submitForm() {
+        // Change button appearance upon submitting form
+        submit.innerHTML="<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Loading..."; 
+        submit.disabled = true; 
+        return true;
+      }
+      
+      function checkNumber(param) {
+        // Checks if inputted value is a number
+        if (isNaN(param)){
+          return false
+        }
+        return true
+      }
+
+      function checkMax(param, max) {
+        // Checks if inputted value is less than or eqaul to the maximum possible value
+        return param <= max;
+      }
+
+      function checkMin(param, min) {
+        // Checks if inputted value is greater than or eqaul to the minimum possible value
+        return param >= min;
+      }
+
+      // function replaceIfNaN(param, replacement) {
+      //   // Replaces a parameter if it is not a number or empty
+      //   return param >= min;
+      // }
+
+    </script>
+    
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+  
   </body>
 </html>

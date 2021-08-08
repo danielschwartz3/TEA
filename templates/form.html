@@ -49,136 +49,200 @@
       <br></br>
 
       <form class="row g-3" action="/form_response" onsubmit=" submit.innerHTML='Loading...'; submit.disabled = true; return true;" method="POST">
-          
-
-
-        <div class="row">
-          <div class="col-md">
-            <label for="cur_den" class="form-label">Current Density [A/cm^2]</label>
-            <input type="number" step="0.001" class="form-control" id="cur_den" name="cur_den" value={{cur_den}}>
-          </div>
-          <div class="col-md">
-            <label for="cell_v" class="form-label">Cell Voltage [V]</label>
-            <input type="number" step="0.01" class="form-control" id="cell_v" name="cell_v" value={{cell_v}}>
-          </div>
-          <div class="col-md">
-              <label for="FE" class="form-label">Faradaic Efficiency [%]</label>
-              <input type="number" step="0.001" class="form-control" id="FE" name="FE" value={{FE}}>
+        
+        <div class="container">
+          <div class="row">
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="number" step="0.001" class="form-control" id="cur_den" name="cur_den" placeholder="123" value="{{cur_den}}">
+                <label for="cur_den">Current Density [A/cm^2]</label>
+              </div>
             </div>
-        </div>
-
-        <div class="row">          
-          <div class="col-md">
-              <label for="fdca_y" class="form-label">FDCA yield [%]</label>
-            <input type="number" step="0.001" class="form-control" id="fdca_y" name="fdca_y" value={{fdca_y}}>
-          </div>
-          <div class="col-md">
-              <label for="elec_den" class="form-label">Electrolyte density [kg/L]</label>
-            <input type="number" step="0.01" class="form-control" id="elec_den" name="elec_den" value={{elec_den}}>
-          </div>
-          <div class="col-md">
-              <label for="prod" class="form-label">FDCA production [kg/day]</label>
-            <input type="number" step="0.1" class="form-control" id="prod" name="prod" value={{prod}}>
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="number" step="0.01" class="form-control" id="cell_v" name="cell_v" placeholder="123" value={{cell_v}}>
+                <label for="cell_v">Cell Voltage [V]</label>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="number" step="0.001" class="form-control" id="FE" name="FE" placeholder="123" value={{FE}} >
+                <label for="FE">Faradaic Efficiency [%]</label>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md">
-            <label for="prod_price" class="form-label">FDCA Selling Price [$/ton]</label>
-          <input type="number" step="0.1" class="form-control" id="prod_price" name="prod_price" value={{prod_price}}>
-          </div>
-          <div class="col-md">
-              <label for="elec_p" class="form-label">Electricity Price [$/kWh]</label>
-            <input type="number" step="0.001" class="form-control" id="elec_p" name="elec_p" value={{elec_p}}>
-          </div>
-          <div class="col-md">
-              <label for="h2_p" class="form-label">H2 Price [$/kg]</label>
-            <input type="number" step="0.001" class="form-control" id="h2_p" name="h2_p" value={{h2_p}}>
+        <div class="container">
+          <div class="row">
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="number" step="0.001" class="form-control" id="fdca_y" name="fdca_y"  placeholder="123" value={{fdca_y}}>
+                <label for="fdca_y">FDCA yield [%]</label>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="number" step="0.01" class="form-control" id="elec_den" name="elec_den" placeholder="123" value={{elec_den}}>
+                <label for="elec_den">Electrolyte density [kg/L]</label>
+            </div>
+            </div>
+            <div class="col-md">
+              <div class="form-floating">
+                <input ttype="number" step="0.1" class="form-control" id="prod" name="prod" placeholder="123" value={{prod}}>
+                <label for="prod">FDCA production [kg/day]</label>
+              </div>
+            </div>
           </div>
         </div>
-          
+        
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="number" step="0.1" class="form-control" id="prod_price" name="prod_price" placeholder="123" value={{prod_price}} >
+                <label for="prod_price">FDCA Selling Price [$/ton]</label>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="number" step="0.001" class="form-control" id="elec_p" name="elec_p" placeholder="123" value={{elec_p}}>
+                <label for="elec_p">Electricity Price [$/kWh]</label>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="form-floating">
+                <input type="number" step="0.001" class="form-control" id="h2_p" name="h2_p" placeholder="123" value={{h2_p}}>
+                <label for="h2_p"> H2 Price [$/kg]</label>
+              </div>
+            </div>
+          </div>
+        </div>
                     
         <div class="text-center">
           <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#content" >Show More Parameters</button>
         </div>
 
         <div class="collapse" id="content">  
-          
-          <div class="row">
-            <div class="col-md">
-              <label for="hmf_p" class="form-label">HMF Cost [$/kg] </label>
-            <input type="number" step="0.00001" class="form-control" id="hmf_p" name="hmf_p" value={{hmf_p}}>
-            </div>
-            <div class="col-md">
-                <label for="h2o_p" class="form-label">Water Cost [$/kg]</label>
-              <input type="number" step="0.00001" class="form-control" id="h2o_p" name="h2o_p" value={{h2o_p}}>
-            </div>
-            <div class="col-md">
-                <label for="elec_ref" class="form-label">Electrolyzer Reference cost [$/m^2]</label>
-              <input type="number" step="0.1" class="form-control" id="elec_ref" name="elec_ref" value={{elec_ref}}>
-            </div>
-          </div>
-          
-          <div class="row"> 
-            <div class="col-md">
-              <label for="op_time" class="form-label">Plant Operating Time [days/year]</label>
-            <input type="number" step="0.1" class="form-control" id="op_time" name="op_time" value={{op_time}}>
-            </div>
-            <div class="col-md">
-                <label for="t" class="form-label">Income Tax Rate</label>
-              <input type="number" step="0.001" class="form-control" id="t" name="t" value={{t}}>
-            </div>
-            <div class="col-md">
-                <label for="r" class="form-label">Nominal Interest Rate</label>
-              <input type="number" step="0.001" class="form-control" id="r" name="r" value={{r}}>
-            </div>
-          </div>
+          <div class="row g-3">
 
-          <div class="row">
-            <div class="col-md">
-              <label for="plant_life" class="form-label">Plant Lifetime [years]</label>
-            <input type="number" step="0.1" class="form-control" id="plant_life" name="plant_life" value={{plant_life}}>
+            <div class="container">
+              <div class="row">
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.00001" class="form-control" id="hmf_p" name="hmf_p" placeholder="123" value={{hmf_p}}>
+                    <label for="hmf_p">HMF Cost [$/kg] </label>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.00001" class="form-control" id="h2o_p" name="h2o_p" placeholder="123" value={{h2o_p}}>
+                    <label for="h2o_p">Water Cost [$/kg]</label>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.1" class="form-control" id="elec_ref" name="elec_ref" placeholder="123" value={{elec_ref}}>
+                    <label for="elec_ref">Electrolyzer Reference cost [$/m^2]</label>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-md">
-                <label for="cd_low" class="form-label">CD Low Range</label>
-              <input type="number" step="0.001" class="form-control" id="cd_low" name="cd_low" value={{cd_low}}>
-            </div>        
-            <div class="col-md">
-                <label for="cd_high" class="form-label">CD High Range</label>
-              <input type="number" step="0.001" class="form-control" id="cd_high" name="cd_high" value={{cd_high}}>
+            
+            <div class="container">
+              <div class="row">
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.1" class="form-control" id="op_time" name="op_time" placeholder="123" value={{op_time}}>
+                    <label for="op_time">Plant Operating Time [days/year]</label>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.001" class="form-control" id="t" name="t" placeholder="123" value={{t}}>
+                    <label for="t">Income Tax Rate</label>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.001" class="form-control" id="r" name="r" placeholder="123" value={{r}}>
+                    <label for="r">Nominal Interest Rate</label>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
 
+            <div class="container">
+              <div class="row">
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.1" class="form-control" id="plant_life" name="plant_life" placeholder="123" value={{plant_life}}>
+                    <label for="plant_life">Plant Lifetime [years]</label>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.001" class="form-control" id="cd_low" name="cd_low" placeholder="123" value={{cd_low}}>
+                    <label for="cd_low">CD Low Range</label>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.001" class="form-control" id="cd_high" name="cd_high" placeholder="123" value={{cd_high}}>
+                    <label for="cd_high">CD High Range</label>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          <div class="row">
-            <div class="col-md">
-              <label for="cv_low" class="form-label">CV Low Range</label>
-            <input type="number" step="0.001" class="form-control" id="cv_low" name="cv_low" value={{cv_low}}>
+            <div class="container">
+              <div class="row">
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.001" class="form-control" id="cv_low" name="cv_low" placeholder="123" value={{cv_low}}>
+                    <label for="cv_low">CV Low Range</label>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.001" class="form-control" id="cv_high" name="cv_high" placeholder="123" value={{cv_high}}>
+                    <label for="cv_high">CV High Range</label>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.001" class="form-control" id="fe_low" name="fe_low" placeholder="123" value={{fe_low}}>
+                    <label for="fe_low">FE Low Range</label>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-md">
-                <label for="cv_high" class="form-label">CV High Range</label>
-              <input type="number" step="0.001" class="form-control" id="cv_high" name="cv_high" value={{cv_high}}>
+
+            <div class="container">
+              <div class="row">
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.001" class="form-control" id="fe_high" name="fe_high" placeholder="123" value={{fe_high}}>
+                    <label for="fe_high">FE High Range</label>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.001" class="form-control" id="yld_low" name="yld_low" placeholder="123" value={{yld_low}}>
+                    <label for="yld_low">Yield Low Range</label>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="number" step="0.001" class="form-control" id="yld_high" name="yld_high" placeholder="123" value={{yld_high}}>
+                    <label for="yld_high">Yield High Range</label>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-md">
-                <label for="fe_low" class="form-label">FE Low Range</label>
-              <input type="number" step="0.001" class="form-control" id="fe_low" name="fe_low" value={{fe_low}}>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-md">
-              <label for="fe_high" class="form-label">FE High Range</label>
-            <input type="number" step="0.001" class="form-control" id="fe_high" name="fe_high" value={{fe_high}}>
-            </div>
-            <div class="col-md">
-                <label for="yld_low" class="form-label">Yield Low Range</label>
-              <input type="number" step="0.001" class="form-control" id="yld_low" name="yld_low" value={{yld_low}}>
-            </div>
-            <div class="col-md">
-                <label for="yld_high" class="form-label">Yield High Range</label>
-              <input type="number" step="0.001" class="form-control" id="yld_high" name="yld_high" value={{yld_high}}>
-            </div> 
-          </div>     
+             
+          </div>  
         </div>
 
       <div class="text-center">
